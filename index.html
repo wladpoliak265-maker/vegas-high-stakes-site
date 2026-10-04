@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VEGAS HIGH STAKES 2027 — NYE VIP EXPERIENCE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800;900&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold-primary: #f5d061;
+      --gold-light: #fff3b3;
+      --gold-gradient: linear-gradient(135deg, #ffe89a 0%, #d4a338 50%, #8a6218 100%);
+      --red-accent: #ff2a55;
+      --red-glow: rgba(255, 42, 85, 0.4);
+      --bg-black: #050508;
+      --glass-bg: rgba(18, 18, 28, 0.75);
+      --glass-border: rgba(245, 208, 97, 0.25);
+      --text-main: #ffffff;
+      --text-muted: #a0a0b0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-black);
+      color: var(--text-main);
+      line-height: 1.6;
+      overflow-x: hidden;
+      perspective: 1000px;
+    }
+
+    #particles-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .font-cinzel { font-family: 'Cinzel', serif; }
+
+    /* HEADER */
+    header {
+      padding: 80px 0 40px;
+      text-align: center;
+    }
+
+    .vip-badge {
+      display: inline-block;
+      padding: 8px 24px;
+      background: rgba(245, 208, 97, 0.1);
+      border: 1px solid var(--gold-primary);
+      border-radius: 100px;
+      color: var(--gold-primary);
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      box-shadow: 0 0 20px rgba(245, 208, 97, 0.25);
+      margin-bottom: 20px;
+      animation: pulseGlow 3s infinite alternate;
+    }
+
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 15px rgba(245, 208, 97, 0.2); }
+      100% { box-shadow: 0 0 35px rgba(245, 208, 97, 0.6); }
+    }
+
+    h1 {
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 900;
+      line-height: 1;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      background: var(--gold-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 35px rgba(245, 208, 97, 0.3));
+      margin-bottom: 16px;
+    }
+
+    p.subtitle {
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      color: var(--text-muted);
+      margin-bottom: 40px;
+    }
+
+    /* ТАЙМЕР */
+    .timer-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(20px);
+      border-radius: 24px;
+      padding: 32px 24px;
+      max-width: 780px;
+      margin: 0 auto 60px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+    }
+
+    .timer-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .time-unit {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 20px 8px;
+      text-align: center;
+      position: relative;
+    }
+
+    .time-unit::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 2px;
+      background: var(--gold-gradient);
+    }
+
+    .time-value {
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 800;
+      color: #fff;
+      display: block;
+      line-height: 1;
+    }
+
+    .time-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--gold-primary);
+      margin-top: 8px;
+      display: block;
+    }
+
+    /* РАЗДЕЛЫ */
+    .section-title {
+      text-align: center;
+      margin: 80px 0 40px;
+    }
+
+    .section-title h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      background: var(--gold-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    /* 3D TILT КАРТОЧКИ */
+    .glass-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(16px);
+      border-radius: 20px;
+      padding: 32px;
+      position: relative;
+      transition: transform 0.1s ease-out, border-color 0.3s, box-shadow 0.3s;
+      transform-style: preserve-3d;
+    }
+
+    .glass-card:hover {
+      border-color: var(--gold-primary);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.8), 0 0 30px rgba(245, 208, 97, 0.2);
+    }
+
+    .card-icon {
+      font-size: 2.8rem;
+      margin-bottom: 16px;
+      display: inline-block;
+      transform: translateZ(30px);
+    }
+
+    .glass-card h3 {
+      font-size: 1.4rem;
+      color: var(--text-main);
+      margin-bottom: 12px;
+      transform: translateZ(20px);
+    }
+
+    .glass-card p, .glass-card ul {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      transform: translateZ(10px);
+    }
+
+    /* СЛОТ-МАШИНА */
+    .slot-container {
+      background: radial-gradient(circle at center, rgba(35, 20, 10, 0.9), rgba(5, 5, 10, 0.95));
+      border: 2px solid var(--gold-primary);
+      border-radius: 28px;
+      padding: 40px 24px;
+      text-align: center;
+      margin-top: 40px;
+      box-shadow: inset 0 0 50px rgba(0,0,0,0.9), 0 0 30px rgba(245, 208, 97, 0.2);
+    }
+
+    .slot-balance {
+      font-size: 1.2rem;
+      color: var(--gold-primary);
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .slots-display {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin: 25px 0;
+    }
+
+    .slot-box {
+      width: 90px;
+      height: 110px;
+      background: #000;
+      border: 2px solid var(--gold-primary);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.2rem;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.9), 0 0 15px rgba(245, 208, 97, 0.2);
+      transition: transform 0.05s;
+    }
+
+    .slot-message {
+      height: 24px;
+      margin-top: 15px;
+      font-weight: 700;
+      color: var(--gold-light);
+    }
+
+    /* ФЛИП-КАРТОЧКИ ТУРНИРА */
+    .flip-card {
+      perspective: 1000px;
+      height: 220px;
+      cursor: pointer;
+    }
+
+    .flip-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transform-style: preserve-3d;
+    }
+
+    .flip-card.flipped .flip-inner {
+      transform: rotateY(180deg);
+    }
+
+    .flip-front, .flip-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 20px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      border: 1px solid var(--glass-border);
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+    }
+
+    .flip-back {
+      transform: rotateY(180deg);
+      border-color: var(--gold-primary);
+      background: linear-gradient(145deg, rgba(30, 25, 10, 0.95), rgba(10, 10, 18, 0.95));
+    }
+
+    /* КНОПКИ */
+    .btn-gold {
+      display: inline-block;
+      background: var(--gold-gradient);
+      color: #000;
+      font-weight: 800;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      padding: 18px 42px;
+      border-radius: 100px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(245, 208, 97, 0.3);
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .btn-gold:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 15px 40px rgba(245, 208, 97, 0.5);
+    }
+
+    .btn-gold:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* RSVP & VIP PASS */
+    .form-wrapper {
+      max-width: 650px;
+      margin: 0 auto 90px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .form-control {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      padding: 16px;
+      color: #fff;
+      font-size: 1rem;
+      font-family: inherit;
+      outline: none;
+    }
+
+    .form-control:focus {
+      border-color: var(--gold-primary);
+      box-shadow: 0 0 15px rgba(245, 208, 97, 0.2);
+    }
+
+    .vip-ticket {
+      display: none;
+      background: linear-gradient(135deg, #120e05 0%, #050508 100%);
+      border: 2px solid var(--gold-primary);
+      border-radius: 24px;
+      padding: 40px;
+      text-align: center;
+      box-shadow: 0 0 50px rgba(245, 208, 97, 0.3);
+      animation: fadeIn 0.8s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      .timer-grid { grid-template-columns: repeat(2, 1fr); }
+      .slot-box { width: 70px; height: 90px; font-size: 2.5rem; }
+      .slots-display { gap: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Анимированный Canvas фейерверков и фишек -->
+  <canvas id="particles-canvas"></canvas>
+
+  <div class="wrapper">
+    <!-- HEADER -->
+    <header>
+      <div class="vip-badge">♦️ VIP Access Only ♦️</div>
+      <h1 class="font-cinzel">Vegas High Stakes</h1>
+      <p class="subtitle">Закрытая Новогодняя Ночь • 31 Декабря 2026, 22:00</p>
+
+      <!-- ТАЙМЕР -->
+      <div class="timer-card">
+        <div class="timer-grid">
+          <div class="time-unit">
+            <span class="time-value font-cinzel" id="days">00</span>
+            <span class="time-label">Дней</span>
+          </div>
+          <div class="time-unit">
+            <span class="time-value font-cinzel" id="hours">00</span>
+            <span class="time-label">Часов</span>
+          </div>
+          <div class="time-unit">
+            <span class="time-value font-cinzel" id="minutes">00</span>
+            <span class="time-label">Минут</span>
+          </div>
+          <div class="time-unit">
+            <span class="time-value font-cinzel" id="seconds">00</span>
+            <span class="time-label">Секунд</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ИГРОВЫЕ ЗОНЫ -->
+    <section>
+      <div class="section-title">
+        <h2 class="font-cinzel">Игровой Зал</h2>
+        <p style="color: var(--text-muted)">Каждому гостю выдается VIP-стек фишек на входе</p>
+      </div>
+
+      <div class="cards-grid">
+        <div class="glass-card tilt-card">
+          <span class="card-icon">♠️</span>
+          <h3 class="font-cinzel">Texas Hold'em</h3>
+          <p>Приватные столы для высокого покера, блефа и крупных ставок.</p>
+        </div>
+        <div class="glass-card tilt-card">
+          <span class="card-icon">♦️</span>
+          <h3 class="font-cinzel">Roulette Royale</h3>
+          <p>Американская рулетка. Испытайте чистую удачу на красном или черном.</p>
+        </div>
+        <div class="glass-card tilt-card">
+          <span class="card-icon">♣️️</span>
+          <h3 class="font-cinzel">VIP Blackjack</h3>
+          <p>Быстрые раунды на 21 против профессиональных дилеров.</p>
+        </div>
+      </div>
+
+      <!-- ИНТЕРАКТИВНЫЙ СЛОТ-АВТОМАТ -->
+      <div class="slot-container">
+        <h3 class="font-cinzel" style="color: var(--gold-primary); font-size: 1.8rem;">Испытай удачу High Roller</h3>
+        <div class="slot-balance">Баланс: <span id="chip-balance">1000</span> $VEGAS</div>
+        
+        <div class="slots-display">
+          <div class="slot-box" id="slot1">🎰</div>
+          <div class="slot-box" id="slot2">💎</div>
+          <div class="slot-box" id="slot3">7️⃣</div>
+        </div>
+
+        <button class="btn-gold" id="spin-btn" type="button">Крутить (-100 $)</button>
+        <div class="slot-message" id="slot-msg"></div>
+      </div>
+    </section>
+
+    <!-- ТАИНСТВЕННЫЙ ПОДНОС -->
+    <section>
+      <div class="section-title">
+        <h2 class="font-cinzel">Турнир «Таинственный поднос»</h2>
+        <p style="color: var(--text-muted)">Нажмите на карточку, чтобы перевернуть ее и узнать секрет</p>
+      </div>
+
+      <div class="cards-grid">
+        <div class="flip-card" tabindex="0" role="button" aria-expanded="false">
+          <div class="flip-inner">
+            <div class="flip-front">
+              <span class="card-icon">🎁</span>
+              <h3 class="font-cinzel">Раунд 1</h3>
+              <p style="color: var(--gold-primary); font-weight: 600;">«Слепая ставка»</p>
+              <span style="font-size: 0.75rem; color: var(--text-muted); margin-top: 12px;">(Нажмите для раскрытия)</span>
+            </div>
+            <div class="flip-back">
+              <h4 class="font-cinzel" style="color: var(--gold-primary); margin-bottom: 8px;">Секретное условие</h4>
+              <p>Игра вслепую с удвоением фишек. Победитель раунда получает фирменный коктейль от бармена.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card" tabindex="0" role="button" aria-expanded="false">
+          <div class="flip-inner">
+            <div class="flip-front">
+              <span class="card-icon">⚔️</span>
+              <h3 class="font-cinzel">Раунд 2</h3>
+              <p style="color: var(--gold-primary); font-weight: 600;">«Дуэль Капитанов»</p>
+              <span style="font-size: 0.75rem; color: var(--text-muted); margin-top: 12px;">(Нажмите для раскрытия)</span>
+            </div>
+            <div class="flip-back">
+              <h4 class="font-cinzel" style="color: var(--gold-primary); margin-bottom: 8px;">Секретное условие</h4>
+              <p>Экспресс-турнир на выбывание среди ТОП-3 игроков вечера за главным столом.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card" tabindex="0" role="button" aria-expanded="false">
+          <div class="flip-inner">
+            <div class="flip-front">
+              <span class="card-icon">👑</span>
+              <h3 class="font-cinzel">Финал</h3>
+              <p style="color: var(--gold-primary); font-weight: 600;">«Таинственный Поднос»</p>
+              <span style="font-size: 0.75rem; color: var(--text-muted); margin-top: 12px;">(Нажмите для раскрытия)</span>
+            </div>
+            <div class="flip-back">
+              <h4 class="font-cinzel" style="color: var(--gold-primary); margin-bottom: 8px;">Суперприз</h4>
+              <p>Торжественный вынос подноса с особым призом вечера ровно в 00:00!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ДРЕСС-КОД И ТАЙМИНГ ВЫЕЗДА -->
+    <section>
+      <div class="section-title">
+        <h2 class="font-cinzel">Dress Code & Rules</h2>
+        <p style="color: var(--text-muted)">Правила приватного клуба и строгого выезда</p>
+      </div>
+
+      <div class="cards-grid">
+        <div class="glass-card tilt-card">
+          <span class="card-icon">👔</span>
+          <h3 class="font-cinzel">Dress Code</h3>
+          <p style="color: var(--gold-primary); font-weight: 600; margin-bottom: 12px;">Black Tie & Vegas Glamour</p>
+          <ul style="color: var(--text-muted); font-size: 0.9rem; padding-left: 18px; text-align: left;">
+            <li>Мужчины: Смокинги, костюмы, рубашки, стильные пиджаки.</li>
+            <li>Девушки: Вечерние и коктейльные платья, золото, блёстки.</li>
+            <li style="color: var(--red-accent); margin-top: 8px;">Strictly NO: спортивные костюмы, худи и шлепанцы.</li>
+          </ul>
+        </div>
+
+        <div class="glass-card tilt-card" style="border-color: rgba(255, 42, 85, 0.4);">
+          <span class="card-icon">⏰</span>
+          <h3 class="font-cinzel" style="color: var(--red-accent);">Регламент Выезда</h3>
+          <p style="color: var(--red-accent); font-weight: 600; margin-bottom: 12px;">01.01.2027 — Строгий тайминг</p>
+          <ul style="color: var(--text-muted); font-size: 0.9rem; padding-left: 18px; text-align: left;">
+            <li><strong>10:00</strong> — Подъем, сбор вещей и уборка комнат.</li>
+            <li><strong>11:30</strong> — Финальная проверка сохранности имущества.</li>
+            <li><strong>12:00</strong> — В 12:00 на территории дома <u>никого быть не должно</u>.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <!-- ПОКУПКА БИЛЕТА ЧЕРЕЗ TELEGRAM -->
+    <section class="form-wrapper">
+      <div id="telegram-cta" style="display:block; text-align:center;">
+        <a id="telegram-buy" class="btn-gold" href="https://t.me/VegasHighStakes2027Bot" target="_blank" rel="noopener noreferrer">🎟 Купить билет через Telegram</a>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // --- 1. ТОЧНЫЙ ТАЙМЕР ОБРАТНОГО ОТСЧЕТА ---
+    // Цель: 31 декабря 2026, 22:00:00
+    const targetDate = new Date('2026-12-31T22:00:00+01:00').getTime();
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const diff = targetDate - now;
+
+      if (diff <= 0) {
+        document.querySelector(".timer-card").innerHTML = 
+          "<h2 class='font-cinzel' style='color: var(--gold-primary); text-align: center;'>WELCOME TO VEGAS HIGH STAKES 2027!</h2>";
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      document.getElementById("days").innerText = String(days).padStart(2, '0');
+      document.getElementById("hours").innerText = String(hours).padStart(2, '0');
+      document.getElementById("minutes").innerText = String(minutes).padStart(2, '0');
+      document.getElementById("seconds").innerText = String(seconds).padStart(2, '0');
+    }
+
+    updateCountdown();
+    const countdownTimer = setInterval(() => {
+      updateCountdown();
+      if (Date.now() >= targetDate) clearInterval(countdownTimer);
+    }, 1000);
+
+    // --- 2. ИНТЕРАКТИВНЫЙ СЛОТ-АВТОМАТ ---
+    const slotSymbols = ['🎰', '💎', '7️⃣', '👑', '🍒', '🃏'];
+    let balance = 1000;
+    let isSpinning = false;
+
+    function spinSlotMachine() {
+      if (isSpinning) return;
+      if (balance < 100) {
+        document.getElementById('slot-msg').innerText = "Недостаточно фишек! Вы переведены на VIP-кредит (+500 $)";
+        balance += 500;
+        document.getElementById('chip-balance').innerText = balance;
+        return;
+      }
+
+      isSpinning = true;
+      balance -= 100;
+      document.getElementById('chip-balance').innerText = balance;
+      document.getElementById('slot-msg').innerText = "Барабаны крутятся...";
+      document.getElementById('spin-btn').disabled = true;
+
+      const s1 = document.getElementById('slot1');
+      const s2 = document.getElementById('slot2');
+      const s3 = document.getElementById('slot3');
+
+      let spins = 0;
+      const interval = setInterval(() => {
+        s1.innerText = slotSymbols[Math.floor(Math.random() * slotSymbols.length)];
+        s2.innerText = slotSymbols[Math.floor(Math.random() * slotSymbols.length)];
+        s3.innerText = slotSymbols[Math.floor(Math.random() * slotSymbols.length)];
+        spins++;
+
+        if (spins > 15) {
+          clearInterval(interval);
+          isSpinning = false;
+          document.getElementById('spin-btn').disabled = false;
+
+          // Определение выигрыша
+          if (s1.innerText === s2.innerText && s2.innerText === s3.innerText) {
+            balance += 1000;
+            document.getElementById('slot-msg').innerText = "🔥 ДЖЕКПОТ! Вы выиграли 1,000 $VEGAS! 🔥";
+          } else if (s1.innerText === s2.innerText || s2.innerText === s3.innerText || s1.innerText === s3.innerText) {
+            balance += 250;
+            document.getElementById('slot-msg').innerText = "🎉 Отличная комбинация! Выигрыш +250 $VEGAS";
+          } else {
+            document.getElementById('slot-msg').innerText = "Не повезло! Попробуйте еще раз.";
+          }
+          document.getElementById('chip-balance').innerText = balance;
+        }
+      }, 70);
+    }
+
+    document.getElementById('spin-btn').addEventListener('click', spinSlotMachine);
+// --- 4. ДОСТУПНЫЕ FLIP-КАРТОЧКИ ---
+    document.querySelectorAll('.flip-card').forEach(card => {
+      const toggleFlip = () => {
+        const flipped = card.classList.toggle('flipped');
+        card.setAttribute('aria-expanded', String(flipped));
+      };
+
+      card.addEventListener('click', toggleFlip);
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggleFlip();
+        }
+      });
+    });
+
+    // --- 5. 3D TILT ЭФФЕКТ ДЛЯ КАРТОЧЕК ---
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
+        window.matchMedia('(pointer: fine)').matches) {
+      document.querySelectorAll('.tilt-card').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        const rotateX = ((y - centerY) / centerY) * -10;
+        const rotateY = ((x - centerX) / centerX) * 10;
+
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      });
+
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+        });
+      });
+    }
+
+    // --- 6. ДИНАМИЧЕСКИЙ CANVAS ФОН (ЗОЛОТЫЕ ЧАСТИЦЫ И ФЕЙЕРВЕРКИ) ---
+    const canvas = document.getElementById('particles-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resizeCanvas() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.floor(window.innerWidth * dpr);
+      canvas.height = Math.floor(window.innerHeight * dpr);
+      canvas.style.width = window.innerWidth + 'px';
+      canvas.style.height = window.innerHeight + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2.5 + 0.5;
+        this.speedY = Math.random() * -0.5 - 0.2;
+        this.speedX = (Math.random() - 0.5) * 0.4;
+        this.opacity = Math.random() * 0.7 + 0.2;
+      }
+      update() {
+        this.y += this.speedY;
+        this.x += this.speedX;
+        if (this.y < 0) this.reset();
+      }
+      draw() {
+        ctx.fillStyle = `rgba(245, 208, 97, ${this.opacity})`;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < 70; i++) {
+      particles.push(new Particle());
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animateParticles);
+    }
+
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      animateParticles();
+    }
+  
+    // --- 7. TELEGRAM ---
+    // Укажи username бота без @, когда backend будет готов.
+    // Токен бота НИКОГДА не помещается в этот HTML.
+    const TELEGRAM_BOT_USERNAME = 'VegasHighStakes2027Bot';
+
+    if (TELEGRAM_BOT_USERNAME) {
+      const telegramCta = document.getElementById('telegram-cta');
+      const telegramBuy = document.getElementById('telegram-buy');
+      telegramBuy.href = `https://t.me/${TELEGRAM_BOT_USERNAME}`;
+      telegramCta.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
